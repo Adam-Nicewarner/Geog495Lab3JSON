@@ -46,7 +46,19 @@
         }
 
         tr:nth-child(even) {
-            background-color: #f2f2f2;
+            background-color: black;
+            color: white;
+        }
+        @media screen and (max-width: 1024px) {
+          /* Hide all links, except for the selected tab */
+          #table {
+            display: none;
+          }
+          /* Show the icon that should open and close the topnav*/
+          .topnav a.icon {
+            float: right;
+            display: block;
+          }
         }
     </style>
 </head>
@@ -61,7 +73,7 @@
 
             <table>
                 <tr>
-                    <th>id</th>
+                    <th>location</th>
                     <th>magnitude</th>
                     <th>timestamp</th>
                 </tr>
@@ -77,15 +89,15 @@
         const map = new mapboxgl.Map({
             container: 'map', // container ID
             style: 'mapbox://styles/mapbox/satellite-v9', // style URL
-            zoom: 5.5, // starting zoom
-            center: [138.043, 38] // starting center
+            zoom: 2, // starting zoom
+            center: [-95,40] // starting center
         });
 
 
         async function geojsonFetch() {
 
 
-            let response = await fetch('assets/earthquakes.geojson');
+            let response = await fetch('assets/EarthquakesM2.5_week_USA.geojson');
 
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -94,7 +106,7 @@
             let earthquakes = await response.json();
 
 
-            response = await fetch('assets/japan.json');
+            response = await fetch('assets/USA.json');
 
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -116,7 +128,7 @@
                 var cell1 = row.insertCell(0);
                 var cell2 = row.insertCell(1);
                 var cell3 = row.insertCell(2);
-                cell1.innerHTML = await earthquakes.features[i].properties.id;
+                cell1.innerHTML = await earthquakes.features[i].properties.place;
                 cell2.innerHTML = await earthquakes.features[i].properties.mag;
                 cell3.innerHTML = await new Date(earthquakes.features[i].properties.time).toLocaleDateString("en-US");
 
